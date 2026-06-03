@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="MigrantPilot Standalone Smoke" verbose="1">
+    <test name="Standalone prototype">
+        <classes>
+            <class name="de.ait.migrantpilot.gui.tests.StandaloneSmokeTests"/>
+        </classes>
+    </test>
+</suite>

@@ -57,6 +57,7 @@ def qaTask(String taskName) {
 }
 
 qaTask('positiveAuth')
+qaTask('standaloneSmoke')
 
 // Run a suite by task name, for example: gradle clean positiveAuth
 

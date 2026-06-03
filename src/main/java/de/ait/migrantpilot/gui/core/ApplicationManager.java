@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.asserts.SoftAssert;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public class ApplicationManager {
@@ -38,7 +40,7 @@ public class ApplicationManager {
         WebDriverListener listener = new MyListener();
         driver = new EventFiringDecorator<>(listener).decorate(driver);
 
-        driver.get(AppConfigApi.getProperty("app.url"));
+        driver.get(resolveAppUrl(AppConfigApi.getProperty("app.url")));
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
@@ -47,5 +49,17 @@ public class ApplicationManager {
 
     public void stopTest() {
         driver.quit();
+    }
+
+    private String resolveAppUrl(String appUrl) {
+        if (appUrl.startsWith("http://") || appUrl.startsWith("https://") || appUrl.startsWith("file:/")) {
+            return appUrl;
+        }
+
+        Path path = Paths.get(appUrl);
+        if (!path.isAbsolute()) {
+            path = Paths.get(System.getProperty("user.dir")).resolve(path);
+        }
+        return path.normalize().toUri().toString();
     }
 }
